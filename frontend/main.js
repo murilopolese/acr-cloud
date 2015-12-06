@@ -98,7 +98,7 @@ var getAudio = function( e ) {
 								result.fadeIn( 500 );
 							});
 						} else {
-							console.log( 'music not found' );
+							console.log( 'music not found', data );
 							message.html( 'Music not found, <br> trying again...' );
 							leftchannel = [];
 							rightchannel = [];
