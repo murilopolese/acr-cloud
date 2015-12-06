@@ -1,3 +1,4 @@
+var paused = false;
 $( document ).ready( function() {
 	loading = $( '.loading' );
 	start = $( '.start' );
@@ -63,15 +64,18 @@ var getAudio = function( e ) {
 		if( recordingLength == 0 ) {
 			console.log ( 'recording' );
 		}
-		var left = e.inputBuffer.getChannelData( 0 );
-		var right = e.inputBuffer.getChannelData( 1 );
 
-		leftchannel.push ( new Float32Array( left ) );
-		rightchannel.push ( new Float32Array( right ) );
-		recordingLength += bufferSize;
+		if( !paused ) {
+			var left = e.inputBuffer.getChannelData( 0 );
+			var right = e.inputBuffer.getChannelData( 1 );
 
-		if( recordingLength > 300 * bufferSize ) {
-			recorder.disconnect( context.destination );
+			leftchannel.push ( new Float32Array( left ) );
+			rightchannel.push ( new Float32Array( right ) );
+			recordingLength += bufferSize;
+			if( recordingLength > 200 * bufferSize ) {
+				paused = true;
+			}
+		} else {
 			var blob = createWav( leftchannel, rightchannel, recordingLength );
 
 			var reader = new window.FileReader();
@@ -99,7 +103,7 @@ var getAudio = function( e ) {
 						leftchannel = [];
 						rightchannel = [];
 						recordingLength = 0;
-						recorder.connect( context.destination );
+						pause = false;
 					}
 				})
 				.fail( function( err ) {
@@ -108,7 +112,53 @@ var getAudio = function( e ) {
 			}
 
 		}
-	}
+
+	// 	if( recordingLength > 300 * bufferSize ) {
+	// 		recorder.disconnect( context.destination );
+	// 		var blob = createWav( leftchannel, rightchannel, recordingLength );
+	//
+	// 		var reader = new window.FileReader();
+	// 		reader.readAsDataURL( blob );
+	// 		reader.onloadend = function() {
+	// 			base64data = reader.result;
+	// 			console.log( 'sending audio' );
+	// 			message.html( 'Identifying audio' );
+	// 			$.post(
+	// 				'/',
+	// 				{ audio: base64data }
+	// 			)
+	// 			.done( function( data ) {
+	// 				data = JSON.parse( data );
+	// 				if( data.status.code == 0 ) {
+	// 					message.html( 'Found!' );
+	// 					console.log( 'found music', data );
+	// 					radioName.html( data.metadata.custom_files[ 0 ].title );
+	// 					listening.fadeOut( 500, function() {
+	// 						result.fadeIn( 500 );
+	// 					});
+	// 				} else {
+	// 					console.log( 'music not found' );
+	// 					message.html( 'Music not found, <br> trying again...' );
+	// 					leftchannel = [];
+	// 					rightchannel = [];
+	// 					recordingLength = 0;
+	// 					// recorder.connect( context.destination );
+	// 				}
+	// 			})
+	// 			.fail( function( err ) {
+	// 				console.log( 'err', err );
+	// 			})
+	// 		}
+	//
+	// 	} else {
+	// 		var left = e.inputBuffer.getChannelData( 0 );
+	// 		var right = e.inputBuffer.getChannelData( 1 );
+	//
+	// 		leftchannel.push ( new Float32Array( left ) );
+	// 		rightchannel.push ( new Float32Array( right ) );
+	// 		recordingLength += bufferSize;
+	// 	}
+	// }
 
 	// we connect the recorder
 	volume.connect(recorder);
