@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Sticky Radio</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="icon" type="image/x-icon" href="favicon.png">
+		<link rel="stylesheet" href="main.css" media="screen" title="main style" charset="utf-8">
+	</head>
+	<body>
+		<div class="loading">
+			<div class="container">
+				<div class="row vcenter text-center">
+						<p class="caption">
+							Loading ...
+						</p>
+				</div>
+			</div>
+		</div>
+		<div class="start">
+			<div class="container">
+				<div class="row vcenter text-center">
+						<h1>Sticky Radio</h1>
+						<p class="caption">
+							Touch to start
+						</p>
+				</div>
+			</div>
+		</div>
+		<div class="listening">
+			<div class="container">
+				<div class="row vcenter text-center">
+						<div class="ring1"></div>
+						<div class="ring2"></div>
+						<div class="ring3"></div>
+						<p id="listening-message" class="caption">
+							Listening...
+						</p>
+				</div>
+			</div>
+		</div>
+		<div class="result">
+			<div class="container">
+				<div class="row vcenter text-center">
+						<p class="caption">
+							You are listening to
+						</p>
+						<h2 id="radio-name"></h2>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+	</body>
+</html>
