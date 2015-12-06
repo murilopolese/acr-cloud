@@ -61,56 +61,56 @@ var getAudio = function( e ) {
 	recorder = context.createScriptProcessor( bufferSize, 2, 2 );
 
 	recorder.onaudioprocess = function(e){
-		if( recordingLength == 0 ) {
-			console.log ( 'recording' );
-		}
 
 		if( !paused ) {
+			if( recordingLength == 0 ) {
+				console.log ( 'recording' );
+			}
 			var left = e.inputBuffer.getChannelData( 0 );
 			var right = e.inputBuffer.getChannelData( 1 );
 
 			leftchannel.push ( new Float32Array( left ) );
 			rightchannel.push ( new Float32Array( right ) );
 			recordingLength += bufferSize;
+
 			if( recordingLength > 200 * bufferSize ) {
 				paused = true;
-			}
-		} else {
-			var blob = createWav( leftchannel, rightchannel, recordingLength );
 
-			var reader = new window.FileReader();
-			reader.readAsDataURL( blob );
-			reader.onloadend = function() {
-				base64data = reader.result;
-				console.log( 'sending audio' );
-				message.html( 'Identifying audio' );
-				$.post(
-					'/',
-					{ audio: base64data }
-				)
-				.done( function( data ) {
-					data = JSON.parse( data );
-					if( data.status.code == 0 ) {
-						message.html( 'Found!' );
-						console.log( 'found music', data );
-						radioName.html( data.metadata.custom_files[ 0 ].title );
-						listening.fadeOut( 500, function() {
-							result.fadeIn( 500 );
-						});
-					} else {
-						console.log( 'music not found' );
-						message.html( 'Music not found, <br> trying again...' );
-						leftchannel = [];
-						rightchannel = [];
-						recordingLength = 0;
-						pause = false;
-					}
-				})
-				.fail( function( err ) {
-					console.log( 'err', err );
-				})
-			}
+				var blob = createWav( leftchannel, rightchannel, recordingLength );
 
+				var reader = new window.FileReader();
+				reader.readAsDataURL( blob );
+				reader.onloadend = function() {
+					base64data = reader.result;
+					console.log( 'sending audio' );
+					message.html( 'Identifying audio' );
+					$.post(
+						'/',
+						{ audio: base64data }
+					)
+					.done( function( data ) {
+						data = JSON.parse( data );
+						if( data.status.code == 0 ) {
+							message.html( 'Found!' );
+							console.log( 'found music', data );
+							radioName.html( data.metadata.custom_files[ 0 ].title );
+							listening.fadeOut( 500, function() {
+								result.fadeIn( 500 );
+							});
+						} else {
+							console.log( 'music not found' );
+							message.html( 'Music not found, <br> trying again...' );
+							leftchannel = [];
+							rightchannel = [];
+							recordingLength = 0;
+							paused = false;
+						}
+					})
+					.fail( function( err ) {
+						console.log( 'err', err );
+					})
+				}
+			}
 		}
 
 	// 	if( recordingLength > 300 * bufferSize ) {
