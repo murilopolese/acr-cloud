@@ -158,7 +158,7 @@ var getAudio = function( e ) {
 	// 		rightchannel.push ( new Float32Array( right ) );
 	// 		recordingLength += bufferSize;
 	// 	}
-	// }
+	}
 
 	// we connect the recorder
 	volume.connect(recorder);
