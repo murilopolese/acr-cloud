@@ -9,7 +9,9 @@
     "express": "^4.13.3"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+		"start": "node example.js"
+	},
   "author": "Murilo Polese <murilopolese@gmail.com>",
   "license": "WTFPL"
 }
