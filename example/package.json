@@ -1,0 +1,15 @@
+{
+  "name": "acr-cloud-example",
+  "version": "0.0.0",
+  "description": "ACR Cloud library example",
+  "main": "acrcloud.js",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "dotenv": "^1.2.0",
+    "express": "^4.13.3"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Murilo Polese <murilopolese@gmail.com>",
+  "license": "WTFPL"
+}

@@ -4,7 +4,7 @@ var express = require( 'express' );
 var bodyParser = require('body-parser')
 var app = express();
 
-var ACRCloud = require( './acrcloud' );
+var ACRCloud = require( '../acrcloud' );
 var acr = new ACRCloud({
 	access_key: process.env.ACCESS_KEY,
 	access_secret: process.env.ACCESS_SECRET
