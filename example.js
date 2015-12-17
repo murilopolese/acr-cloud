@@ -1,6 +1,5 @@
 require('dotenv').load();
 
-var fs = require( 'fs' );
 var express = require( 'express' );
 var bodyParser = require('body-parser')
 var app = express();
@@ -18,15 +17,10 @@ app.use( function( req, res, next ) {
 	next();
 });
 
-// Set public folder
-app.use( express.static( 'frontend' ) );
-
 // Body parser with bigger body size limit
-app.use( bodyParser.json({limit: '50mb'}) );
-app.use( bodyParser.urlencoded({
-	limit: '50mb',
-  extended: true
-}));
+var sizeLimit = process.env.SIZE_LIMIT || '5mb';
+app.use( bodyParser.json( { limit: sizeLimit } ) );
+app.use( bodyParser.urlencoded( { limit: sizeLimit, extended: true } ) );
 
 // POST endpoint to receive the base64 audio
 app.post( '/', function( req, res ) {
@@ -39,9 +33,17 @@ app.post( '/', function( req, res ) {
 		});
 	}
 
-	var buffer = req.body.audio.replace(/^data:audio\/wav;base64,/, "");;
-	acr.identify( buffer, function( err, response ) {
-		res.send( response.body );
+	// HTML/JS base64 src audio file
+	// var buffer = req.body.audio.replace(/^data:audio\/wav;base64,/, "");
+	var buffer = req.body.audio;
+	acr.identify( buffer )
+	.then( res.send )
+	.catch( function( err ) {
+		return req.send({
+			success: false,
+			msg: "Error identifying audio",
+			data: err
+		});
 	})
 });
 
