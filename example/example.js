@@ -37,9 +37,30 @@ app.post( '/', function( req, res ) {
 	// var buffer = req.body.audio.replace(/^data:audio\/wav;base64,/, "");
 	var buffer = req.body.audio;
 	acr.identify( buffer )
-	.then( res.send )
+	.then( function( data ) {
+		var response = JSON.parse( data.body );
+		if( data.statusCode == 200 && response.status ) {
+			var success = ( response.status.msg == 'Success' );
+			return res.send({
+				success: success,
+				msg: response.status.msg,
+				data: response
+			});
+		} else {
+			return res.send({
+				success: false,
+				msg: "Error reaching API",
+				data: data
+			});
+		}
+		res.send({
+			success: true,
+			msg: "Found the audio",
+			data: data
+		})
+	})
 	.catch( function( err ) {
-		return req.send({
+		return res.send({
 			success: false,
 			msg: "Error identifying audio",
 			data: err
