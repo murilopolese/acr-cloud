@@ -9,7 +9,7 @@ There is also a [web api](https://docs.acrcloud.com/webapi) and that is the one 
 This package is available on npm registry:
 
 ```
-npm install --save arc-cloud
+npm install --save acr-cloud
 ```
 
 ## How to use
