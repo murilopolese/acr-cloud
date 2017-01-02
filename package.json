@@ -12,5 +12,16 @@
   "devDependencies": {},
   "scripts": {},
   "author": "Murilo Polese <murilopolese@gmail.com>",
-  "license": "WTFPL"
+  "license": "WTFPL",
+  "directories": {
+    "example": "example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murilopolese/acr-cloud.git"
+  },
+  "bugs": {
+    "url": "https://github.com/murilopolese/acr-cloud/issues"
+  },
+  "homepage": "https://github.com/murilopolese/acr-cloud#readme"
 }
